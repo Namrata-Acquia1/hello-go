@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func main() {
+func loop() {
 	n := 5
 
 	for i := 0; i < n; i++ {
