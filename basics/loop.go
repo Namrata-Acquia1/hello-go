@@ -2,8 +2,7 @@ package main
 
 import "fmt"
 
-func loop() {
-	n := 5
+func loop(n int) {
 
 	for i := 0; i < n; i++ {
 		//loop for spaces
