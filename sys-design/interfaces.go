@@ -11,7 +11,7 @@ import (
 type Device interface {
 	Name() string
 	TogglePower()
-	Adjust(value int)
+	NumberPad(value int) // Updated method name
 	IsOn() bool
 }
 
@@ -32,8 +32,8 @@ func (tv *TV) TogglePower() {
 	}
 }
 
-// Adjust method for TV (adjust channel)
-func (tv *TV) Adjust(value int) {
+// NumberPad method for TV (adjust channel)
+func (tv *TV) NumberPad(value int) {
 	if !tv.isOn {
 		fmt.Println("TV is off. Cannot adjust channel.")
 		return
@@ -80,8 +80,8 @@ func (fan *CeilingFan) TogglePower() {
 	}
 }
 
-// Adjust method for CeilingFan (adjust speed)
-func (fan *CeilingFan) Adjust(value int) {
+// NumberPad method for CeilingFan (adjust speed)
+func (fan *CeilingFan) NumberPad(value int) {
 	if !fan.isOn {
 		fmt.Println("Fan is off. Cannot adjust speed.")
 		return
@@ -128,8 +128,8 @@ func (ac *AirConditioner) TogglePower() {
 	}
 }
 
-// Adjust method for AirConditioner (adjust temperature)
-func (ac *AirConditioner) Adjust(value int) {
+// NumberPad method for AirConditioner (adjust temperature)
+func (ac *AirConditioner) NumberPad(value int) {
 	if !ac.isOn {
 		fmt.Println("AC is off. Cannot adjust temperature.")
 		return
@@ -184,7 +184,7 @@ func controlDevice(device Device) {
 			fmt.Println("Invalid input. Please enter a number.")
 			return
 		}
-		device.Adjust(value)
+		device.NumberPad(value) // Updated method call
 	case "3":
 		fmt.Println("Returning to main menu.")
 		return
