@@ -11,7 +11,7 @@ import (
 type Device interface {
 	Name() string
 	TogglePower()
-	NumberPad(value int) // Updated method name
+	NumberPad(value int)
 	IsOn() bool
 }
 
@@ -21,7 +21,6 @@ type TV struct {
 	channel int
 }
 
-// TogglePower method for TV
 func (tv *TV) TogglePower() {
 	if tv.isOn {
 		fmt.Println("TV Power off")
@@ -32,7 +31,6 @@ func (tv *TV) TogglePower() {
 	}
 }
 
-// NumberPad method for TV (adjust channel)
 func (tv *TV) NumberPad(value int) {
 	if !tv.isOn {
 		fmt.Println("TV is off. Cannot adjust channel.")
@@ -48,28 +46,23 @@ func (tv *TV) NumberPad(value int) {
 	fmt.Printf("TV Channel set to %d\n", tv.channel)
 }
 
-// IsOn method for TV
 func (tv *TV) IsOn() bool {
 	return tv.isOn
 }
 
-// Name method for TV
 func (tv *TV) Name() string {
 	return "TV"
 }
 
-// Factory function for TV
 func NewTV() Device {
 	return &TV{}
 }
 
-// CeilingFan struct
 type CeilingFan struct {
 	isOn  bool
 	speed int
 }
 
-// TogglePower method for CeilingFan
 func (fan *CeilingFan) TogglePower() {
 	if fan.isOn {
 		fmt.Println("Fan Power off")
@@ -80,7 +73,6 @@ func (fan *CeilingFan) TogglePower() {
 	}
 }
 
-// NumberPad method for CeilingFan (adjust speed)
 func (fan *CeilingFan) NumberPad(value int) {
 	if !fan.isOn {
 		fmt.Println("Fan is off. Cannot adjust speed.")
@@ -96,17 +88,14 @@ func (fan *CeilingFan) NumberPad(value int) {
 	fmt.Printf("Fan Speed set to %d\n", fan.speed)
 }
 
-// IsOn method for CeilingFan
 func (fan *CeilingFan) IsOn() bool {
 	return fan.isOn
 }
 
-// Name method for CeilingFan
 func (fan *CeilingFan) Name() string {
 	return "Ceiling Fan"
 }
 
-// Factory function for Ceiling Fan
 func NewCeilingFan() Device {
 	return &CeilingFan{}
 }
@@ -117,7 +106,6 @@ type AirConditioner struct {
 	temperature int
 }
 
-// TogglePower method for AirConditioner
 func (ac *AirConditioner) TogglePower() {
 	if ac.isOn {
 		fmt.Println("AC Power off")
@@ -128,7 +116,6 @@ func (ac *AirConditioner) TogglePower() {
 	}
 }
 
-// NumberPad method for AirConditioner (adjust temperature)
 func (ac *AirConditioner) NumberPad(value int) {
 	if !ac.isOn {
 		fmt.Println("AC is off. Cannot adjust temperature.")
@@ -144,22 +131,19 @@ func (ac *AirConditioner) NumberPad(value int) {
 	fmt.Printf("AC Temperature set to %d°C\n", ac.temperature)
 }
 
-// IsOn method for AirConditioner
 func (ac *AirConditioner) IsOn() bool {
 	return ac.isOn
 }
 
-// Name method for AirConditioner
 func (ac *AirConditioner) Name() string {
 	return "Air Conditioner"
 }
 
-// Factory function for Air Conditioner
 func NewAirConditioner() Device {
 	return &AirConditioner{}
 }
 
-// controlDevice function to interact with a specific device
+// controlDevice function
 func controlDevice(device Device) {
 	clearScreen()
 
@@ -194,12 +178,11 @@ func controlDevice(device Device) {
 
 	fmt.Println("Press Enter to continue.")
 	fmt.Scanln()
-	controlDevice(device) // Recursive call to keep interacting with the same device
+	controlDevice(device)
 }
 
-// clearScreen clears the console screen
 func clearScreen() {
-	cmd := exec.Command("clear") // for Linux/OSX
+	cmd := exec.Command("clear")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
@@ -218,7 +201,7 @@ func main() {
 		fmt.Println("1. TV")
 		fmt.Println("2. Ceiling Fan")
 		fmt.Println("3. Air Conditioner")
-		fmt.Println("4. Exit")
+		fmt.Println("4. Remote Off")
 
 		var choice string
 		fmt.Print("Enter your choice: ")
@@ -234,7 +217,7 @@ func main() {
 		case "3":
 			device = ac
 		case "4":
-			fmt.Println("Exiting.")
+			fmt.Println("Remote turned off.")
 			return
 		default:
 			fmt.Println("Invalid choice. Please enter 1, 2, 3, or 4.")
