@@ -110,7 +110,6 @@ func (ac *AirConditioner) TogglePower() {
 	if ac.isOn {
 		ac.isOn = false
 		fmt.Println("AC Power off")
-
 	} else {
 		fmt.Println("AC Power on")
 		ac.isOn = true
