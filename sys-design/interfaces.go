@@ -108,9 +108,10 @@ type AirConditioner struct {
 }
 
 func (ac *AirConditioner) TogglePower() {
-	if ac.IsOn() {
+	if ac.isOn {
 		ac.isOn = false
 		fmt.Println("AC Power off")
+
 	} else {
 		ac.isOn = true
 		fmt.Println("AC Power on")
