@@ -108,10 +108,9 @@ type AirConditioner struct {
 }
 
 func (ac *AirConditioner) TogglePower() {
-	if ac.isOn {
+	if ac.IsOn() {
 		ac.isOn = false
 		fmt.Println("AC Power off")
-
 	} else {
 		ac.isOn = true
 		fmt.Println("AC Power on")
@@ -170,7 +169,7 @@ func controlDevice(device Device) {
 			fmt.Println("Invalid input. Please enter a number.")
 			return
 		}
-		device.NumberPad(value) // Updated method call
+		device.NumberPad(value)
 	case "3":
 		fmt.Println("Returning to main menu.")
 		return
