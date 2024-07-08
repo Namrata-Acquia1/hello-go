@@ -171,6 +171,6 @@ func main() {
 	//PUT employee
 	router.PUT("/api/employees/:id", putEmployee)
 	//DELETE employee
-	router.DELETE("/api/employees/:id", deleteEmployee)
+	router.DELETE("/api/employees", deleteEmployee)
 	router.Run("localhost:9090")
 }
