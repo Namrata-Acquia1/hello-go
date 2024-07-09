@@ -79,7 +79,7 @@ func postEmployees(context *gin.Context) {
 	newEmployee.UpdatedAt = currentTime
 
 	employees = append(employees, newEmployee)
-	context.JSON(http.StatusCreated, newEmployee)
+	context.JSON(http.StatusCreated, employees)
 }
 
 // PATCH employee data function
