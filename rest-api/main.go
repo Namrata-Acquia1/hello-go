@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type Employee struct {
@@ -41,7 +42,6 @@ var employees = []Employee{
 // GET all employee function
 func getAllEmployees(context *gin.Context) {
 	context.JSON(http.StatusOK, employees)
-	//context.IndentedJSON(http.StatusOK, employees)
 }
 
 // GET employee by id function
@@ -61,7 +61,17 @@ func postEmployees(context *gin.Context) {
 	var newEmployee Employee
 
 	if err := context.BindJSON(&newEmployee); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	newEmployee.ID = uuid.New().String()
+
+	for _, emp := range employees {
+		if emp.ID == newEmployee.ID {
+			context.JSON(http.StatusConflict, gin.H{"error": "Employee with same ID already exists"})
+			return
+		}
 	}
 
 	currentTime := getCurrentTimestamp()
@@ -69,7 +79,7 @@ func postEmployees(context *gin.Context) {
 	newEmployee.UpdatedAt = currentTime
 
 	employees = append(employees, newEmployee)
-	context.JSON(http.StatusCreated, employees)
+	context.JSON(http.StatusCreated, newEmployee)
 }
 
 // PATCH employee data function
@@ -77,10 +87,15 @@ func patchEmployee(context *gin.Context) {
 	id := context.Param("id")
 	var patchedEmployee Employee
 
+	if err := context.BindJSON(&patchedEmployee); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	for i, emp := range employees {
 		if emp.ID == id {
-			if err := context.BindJSON(&patchedEmployee); err != nil {
-				context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			if emp.Active == false {
+				context.JSON(http.StatusBadRequest, gin.H{"error": "Employee is not active and cannot be updated"})
 				return
 			}
 
@@ -89,9 +104,6 @@ func patchEmployee(context *gin.Context) {
 			}
 			if patchedEmployee.Email != "" {
 				employees[i].Email = patchedEmployee.Email
-			}
-			if patchedEmployee.Active {
-				employees[i].Active = patchedEmployee.Active
 			}
 			if patchedEmployee.Designation != "" {
 				employees[i].Designation = patchedEmployee.Designation
@@ -110,16 +122,22 @@ func patchEmployee(context *gin.Context) {
 // PUT employee data function
 func putEmployee(context *gin.Context) {
 	id := context.Param("id")
-	var patchedEmployee Employee
+	var updatedEmployee Employee
+
+	if err := context.BindJSON(&updatedEmployee); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	for i, emp := range employees {
 		if emp.ID == id {
-			if err := context.BindJSON(&patchedEmployee); err != nil {
-				context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			if emp.Active == false {
+				context.JSON(http.StatusBadRequest, gin.H{"error": "Employee is not active and cannot be updated"})
 				return
 			}
 
-			employees[i] = patchedEmployee
+			updatedEmployee.ID = id // ID preserved
+			employees[i] = updatedEmployee
 			employees[i].UpdatedAt = getCurrentTimestamp()
 
 			context.JSON(http.StatusOK, employees[i])
@@ -138,20 +156,21 @@ func deleteEmployee(context *gin.Context) {
 		return
 	}
 
-	found := false
 	for i, emp := range employees {
 		if emp.ID == id {
+			if emp.Active == true {
+				context.JSON(http.StatusBadRequest, gin.H{"error": "Active employee cannot be deleted"})
+				return
+			}
+
 			employees = append(employees[:i], employees[i+1:]...)
-			found = true
-			break
+
+			context.JSON(http.StatusOK, gin.H{"message": "Employee deleted"})
+			return
 		}
 	}
 
-	if found {
-		context.JSON(http.StatusOK, gin.H{"message": "Employee deleted"})
-	} else {
-		context.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
-	}
+	context.JSON(http.StatusNotFound, gin.H{"error": "Employee not found"})
 }
 
 func getCurrentTimestamp() int64 {
