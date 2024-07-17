@@ -8,7 +8,12 @@ import (
 )
 
 func TestTV(t *testing.T) {
-	tv := NewTV()
+	tv := NewTV().(*TV)
+
+	// initial state
+	if tv.IsOn() {
+		t.Error("Expected TV to be off initially, but it is on")
+	}
 
 	tv.TogglePower()
 	if !tv.IsOn() {
@@ -16,8 +21,8 @@ func TestTV(t *testing.T) {
 	}
 
 	tv.NumberPad(5)
-	if tv.(*TV).channel != 5 {
-		t.Errorf("Expected TV channel to be 5, got %d", tv.(*TV).channel)
+	if tv.channel != 5 {
+		t.Errorf("Expected TV channel to be 5, got %d", tv.channel)
 	}
 
 	tv.TogglePower() // Turn TV off
@@ -31,7 +36,12 @@ func TestTV(t *testing.T) {
 }
 
 func TestCeilingFan(t *testing.T) {
-	fan := NewCeilingFan()
+	fan := NewCeilingFan().(*CeilingFan)
+
+	// initial state
+	if fan.IsOn() {
+		t.Error("Expected Ceiling Fan to be off initially, but it is on")
+	}
 
 	fan.TogglePower()
 	if !fan.IsOn() {
@@ -39,8 +49,8 @@ func TestCeilingFan(t *testing.T) {
 	}
 
 	fan.NumberPad(3)
-	if fan.(*CeilingFan).speed != 3 {
-		t.Errorf("Expected Ceiling Fan speed to be 3, got %d", fan.(*CeilingFan).speed)
+	if fan.speed != 3 {
+		t.Errorf("Expected Ceiling Fan speed to be 3, got %d", fan.speed)
 	}
 
 	fan.TogglePower()
@@ -54,7 +64,12 @@ func TestCeilingFan(t *testing.T) {
 }
 
 func TestAirConditioner(t *testing.T) {
-	ac := NewAirConditioner()
+	ac := NewAirConditioner().(*AirConditioner)
+
+	// initial state
+	if ac.IsOn() {
+		t.Error("Expected Air Conditioner to be off initially, but it is on")
+	}
 
 	ac.TogglePower()
 	if !ac.IsOn() {
@@ -62,8 +77,8 @@ func TestAirConditioner(t *testing.T) {
 	}
 
 	ac.NumberPad(25)
-	if ac.(*AirConditioner).temperature != 25 {
-		t.Errorf("Expected Air Conditioner temperature to be 25, got %d", ac.(*AirConditioner).temperature)
+	if ac.temperature != 25 {
+		t.Errorf("Expected Air Conditioner temperature to be 25, got %d", ac.temperature)
 	}
 
 	ac.TogglePower()
