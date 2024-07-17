@@ -22,17 +22,17 @@ type TV struct {
 }
 
 func (tv *TV) TogglePower() {
-	if tv.isOn {
-		fmt.Println("TV Power off")
+	if tv.IsOn() {
 		tv.isOn = false
+		fmt.Println("TV Power off")
 	} else {
-		fmt.Println("TV Power on")
 		tv.isOn = true
+		fmt.Println("TV Power on")
 	}
 }
 
 func (tv *TV) NumberPad(value int) {
-	if !tv.isOn {
+	if !tv.IsOn() {
 		fmt.Println("TV is off. Cannot adjust channel.")
 		return
 	}
@@ -58,23 +58,24 @@ func NewTV() Device {
 	return &TV{}
 }
 
+// CeilingFan struct
 type CeilingFan struct {
 	isOn  bool
 	speed int
 }
 
 func (fan *CeilingFan) TogglePower() {
-	if fan.isOn {
-		fmt.Println("Fan Power off")
+	if fan.IsOn() {
 		fan.isOn = false
+		fmt.Println("Fan Power off")
 	} else {
-		fmt.Println("Fan Power on")
 		fan.isOn = true
+		fmt.Println("Fan Power on")
 	}
 }
 
 func (fan *CeilingFan) NumberPad(value int) {
-	if !fan.isOn {
+	if !fan.IsOn() {
 		fmt.Println("Fan is off. Cannot adjust speed.")
 		return
 	}
@@ -107,17 +108,17 @@ type AirConditioner struct {
 }
 
 func (ac *AirConditioner) TogglePower() {
-	if ac.isOn {
-		fmt.Println("AC Power off")
+	if ac.IsOn() {
 		ac.isOn = false
+		fmt.Println("AC Power off")
 	} else {
-		fmt.Println("AC Power on")
 		ac.isOn = true
+		fmt.Println("AC Power on")
 	}
 }
 
 func (ac *AirConditioner) NumberPad(value int) {
-	if !ac.isOn {
+	if !ac.IsOn() {
 		fmt.Println("AC is off. Cannot adjust temperature.")
 		return
 	}
@@ -168,7 +169,7 @@ func controlDevice(device Device) {
 			fmt.Println("Invalid input. Please enter a number.")
 			return
 		}
-		device.NumberPad(value) // Updated method call
+		device.NumberPad(value)
 	case "3":
 		fmt.Println("Returning to main menu.")
 		return
